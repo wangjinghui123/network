@@ -62,7 +62,7 @@ public delegate void SomeOneUpMessageDelegate(object sender, ScoreInfo scoreInfo
 public class GameMessageDataHandle : MonoBehaviour
 {
     public event RoomVerifyCompleteDelegate RoomVerifyCompleteEvent;
-
+    public Action<string> UpdateLoginPlayer;
 
     public void NetEventFir(object sender, LAMEventArgs evAgs)
     {
@@ -99,6 +99,7 @@ public class GameMessageDataHandle : MonoBehaviour
             case DATA_STATUS_CODE.DATA_CUSTOM_MSG_T:
                 Debug.LogError("收到 自定义信息 成功！！！！！  :" + evAgs.message);
                 _UserMessageHandle(evAgs.message);//用户数据处理
+                //UpdateLoginPlayer
                 break;
             case DATA_STATUS_CODE.DATA_CUSTOM_MSG_F:
                 Debug.LogError("收到 自定义信息 失败！！！！！  :" + evAgs.message);

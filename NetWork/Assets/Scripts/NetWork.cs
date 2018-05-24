@@ -50,6 +50,7 @@ public class NetWork : MonoBehaviour
     }
     private void Awake()
     {
+        DontDestroyOnLoad(this);
         Application.targetFrameRate = 60;
 
         Application.runInBackground = true;
@@ -142,6 +143,7 @@ public class NetWork : MonoBehaviour
     {
         Debug.LogError(" --------------_GameStarusIsReady -------------- ");
         LookAtMe.PushGameStatus("1", true, true);
+        SceneController.Instance.ChangeScene("main");
     }
 
     private void OnDestroy()

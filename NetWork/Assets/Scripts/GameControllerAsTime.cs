@@ -7,6 +7,10 @@ using UnityEngine.Video;
 
 public class GameControllerAsTime : MonoBehaviour
 {
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
     public event EventHandler MovieTimeDoneEvent;
     public event EventHandler ReadyTimeDoneEvent;
     public event EventHandler GameTimeDoneEvent;
