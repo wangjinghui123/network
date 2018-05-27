@@ -6,49 +6,52 @@ using Qy_CSharp_NetWork.Tools.Json;
 using Qy_CSharp_NetWork.Component;
 
 
-public class MsgTryLoginRes             //用户尝试登陆信息
-{
-    public int type
-    {
-        get { return (int)m_type; }
-    }
-    public object data
-    {
-        get { return m_data; }
-    }
-    private GAME_MESSAGE_TYPE m_type = GAME_MESSAGE_TYPE.TRY_LOGIN_RESP;
-    private RankInfo m_data = new RankInfo();
-    public void SetMessage(int modelType, int steps, int rankNum)
-    {
-        m_data.model = modelType;
-        m_data.steps = steps;
-        m_data.rankNum = rankNum;
-    }
-    public class RankInfo
-    {
-        public int model = 0;
-        public int steps = 0;
-        public int rankNum = 0;
-    }
-}
 public enum GAME_MESSAGE_TYPE
 {
     TRY_LOGIN_RESP,
     TRY_LOGOUT_RESP,
 }
 
-public class LoginInfo
+public class LoginInfo : EventArgs
+{
+    private string userId;
+
+    public string UserId
+    {
+        get
+        {
+            return userId;
+        }
+        set
+        {
+            this.userId = value;
+        }
+    }
+}
+public class LogoutInfo : EventArgs
+{
+    private string userId;
+
+    public string UserId
+    {
+        get
+        {
+            return userId;
+        }
+    }
+}
+
+public class ScoreInfo : EventArgs
 {
 
 }
-public class LogoutInfo
+
+
+public enum Message_Type
 {
-
-}
-
-public class ScoreInfo
-{
-
+    TryLogin = 200,//尝试登陆
+    Login = 201,//登陆成功
+    Loginout,
 }
 
 public delegate void RoomVerifyCompleteDelegate(object sender, string message);
@@ -62,7 +65,7 @@ public delegate void SomeOneUpMessageDelegate(object sender, ScoreInfo scoreInfo
 public class GameMessageDataHandle : MonoBehaviour
 {
     public event RoomVerifyCompleteDelegate RoomVerifyCompleteEvent;
-    public Action<string> UpdateLoginPlayer;
+
 
     public void NetEventFir(object sender, LAMEventArgs evAgs)
     {
@@ -84,7 +87,7 @@ public class GameMessageDataHandle : MonoBehaviour
                 break;
             case DATA_STATUS_CODE.DATA_ROOM_STATUS_T:
                 Debug.LogError("收到 更新状态 回复 成功！！！！！  :" + evAgs.message);
-                if (UpdateStatusEvent!=null)
+                if (UpdateStatusEvent != null)
                 {
                     UpdateStatusEvent(evAgs.message);
                 }
@@ -124,20 +127,25 @@ public class GameMessageDataHandle : MonoBehaviour
             case DATA_STATUS_CODE.LINK_USER_BROKEN:
                 Debug.LogError("收到 H5 用户断开链接的信息    !!! ----:" + evAgs.message);
                 JsonData jdata = JsonTools.GetJsonData(evAgs.message);
-                LogoutInfo logoutInfo = new LogoutInfo();
+                if (LoginOut != null)
+                {
+                    LoginOut(jdata);
+                }
                 break;
         }
     }
+
+    private void _OnGetAwadeMessage(string message)
+    {
+        throw new NotImplementedException();
+    }
+
     /// <summary>
     /// 更新状态
     /// </summary>
     public event Action<string> UpdateStatusEvent;
 
 
-    public event SomeOneIsTryLoginDelegate SomeOneTryLoginEvent;
-    public event SomeOneIsLoginDelegate SomeOneIsLoginEvent;
-    public event SomeOneIsLogoutDelegate SomeOneIsLogoutEvent;
-    public event SomeOneUpMessageDelegate SomeOneIsUpMessageEvent;
     private List<LoginInfo> _loginInfoList = new List<LoginInfo>();
     private List<LogoutInfo> _logOutInfoList = new List<LogoutInfo>();
     public List<EventArgs> gameMessageList { get { return _gameMessageList; } }
@@ -149,22 +157,43 @@ public class GameMessageDataHandle : MonoBehaviour
     private void _UserMessageHandle(string message)
     {
         JsonData jsonData = JsonTools.GetJsonData(message);
+        //取得消息的头部，
+        Message_Type type = (Message_Type)(int)jsonData["type"];
+        Debug.LogError("消息类型" + type);
+        switch (type)
+        {
+            case Message_Type.TryLogin:
+               
+                string UserId = jsonData["userId"].ToString();
+                LoginInfo tempLoginInfo = PlayerModule.Instance.GetTryLogininfo(UserId);
+                MsgTryLoginRes resMsg = new MsgTryLoginRes();
+                if (tempLoginInfo == null)
+                {
+                    resMsg.SetMessage(-1, 0, 0);
+                }
+                else
+                {
+                    resMsg.SetMessage(int.Parse(tempLoginInfo.), 0, 0);
+                }
+                TryLoginIn(jsonData);
+                break;
+            case Message_Type.Login:
 
-        print(jsonData);
+                break;
+            default:
+                break;
+        }
     }
+    /// <summary>
+    /// 尝试登陆事件 
+    /// </summary>
+    public event Action<JsonData> TryLoginIn;
 
-
-
-    public event EventHandler RcvMsgOverEvent;
-    public void MyGameOver()
-    {
-        Debug.Log("is game over ???????????");
-        
-    }
-    void _OnGetAwadeMessage(string awardMessage)
-    {
-        print("获取奖励");
-        
-        
-    }
+    /// <summary>
+    /// 尝试登陆回复后的事件
+    /// </summary>
+    public Action<string, MsgTryLoginRes> TryLoginEvent;
+    //有玩家退出事件
+    public event Action<JsonData> LoginOut;
+    public event Action<string> UpdateLoginPlayer;
 }

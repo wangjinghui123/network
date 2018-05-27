@@ -28,32 +28,35 @@ public class SceneController : MonoBehaviour
     /// <param name="action">切换到目标场景后要做的事情</param>
     public void ChangeScene(string sceneName, Action action = null)
     {
-        SceneManager.LoadScene("loadingScene");
+        SceneManager.LoadScene("loadingScene",LoadSceneMode.Additive);
         StartCoroutine(LoadScene(sceneName,action));
     }
 
     IEnumerator LoadScene(string sceneName, Action action)
     {
+        yield return new WaitForSeconds(5);
+        
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
         print(async.progress);
         float value = async.progress;
         //场景加载好后不自动切换
         async.allowSceneActivation = false;
 
-       
 
-        while (async.progress <= 0.9f)
+        while (async.progress < 0.9f)
         {
-            value = async.progress;
-            yield return new WaitForSeconds(1);
+            yield return null;
             print("加载进度:      " + async.progress);
         }
-        while(value >= 0.9f && value <= 1f)
+        value = 0.9f;
+        while (value < 1f)
         {
-            value += 0.1f;
-            yield return new WaitForSeconds(2);
+            Debug.LogError(value);
+            value += 0.01f;
+            yield return null;
             print(value);
         }
+
         yield return async;
         async.allowSceneActivation = true;
         if (action!=null)

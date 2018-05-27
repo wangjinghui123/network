@@ -4,6 +4,7 @@ using UnityEngine;
 using Qy_CSharp_NetWork.WebNet;
 using Qy_CSharp_NetWork.Component;
 using System;
+using Qy_CSharp_NetWork.Tools.Json;
 
 public class NetWork : MonoBehaviour
 {
@@ -62,12 +63,12 @@ public class NetWork : MonoBehaviour
         _gameControllerAsTime.StartGameEvent += StartGame;
         _gameControllerAsTime.Init(true, 15);
     }
-    public void StartGame(object sender,EventArgs msg)
+    public void StartGame(object sender, EventArgs msg)
     {
         Debug.LogError(msg);
         StartWork();
     }
-    public void StartWork(bool needBug = false,bool istest = true)
+    public void StartWork(bool needBug = false, bool istest = true)
     {
         List<string> deviceIds = new List<string>();
         string token = "";
@@ -97,7 +98,7 @@ public class NetWork : MonoBehaviour
             //deviceIds.Clear();
             //deviceIds.Add("10000");
         }
-        Debug.Log("token:   "+token );
+        Debug.Log("token:   " + token);
         string ret = "";
         for (int i = 0; i < deviceIds.Count; i++)
         {
@@ -110,14 +111,49 @@ public class NetWork : MonoBehaviour
         LookAtMe.gameId = gamgId;
         print("初始化成功");
         LookAtMe.JLAM_Event_Fir += GameDataHandle.NetEventFir;
-        _gameDataHandle.SomeOneTryLoginEvent += ResponseTryLoginMsg;
         //二维码生成
+        _gameDataHandle.TryLoginIn += TryLoginInPlayer;
         _gameDataHandle.RoomVerifyCompleteEvent += OnRoomVerify;
+
+        _gameDataHandle.LoginOut += LogginOutPlayer;
         //Debug.Log(m_netOption + "," + deviceIds[0] + "," + deviceIds[1]);
         LookAtMe.StartLAM(m_netOption, 12 * 1000, deviceIds.ToArray());
 
     }
 
+    private void TryLoginInPlayer(JsonData jsonData)
+    {
+
+        LoginInfo tryInfo = new LoginInfo();
+        tryInfo.UserId = jsonData["userId"].ToString();
+        PlayerData tempLoginInfo = PlayerModule.Instance.GetPlayerDataByID(tryInfo.UserId);
+        MsgTryLoginRes resMsg = new MsgTryLoginRes();
+        
+        resMsg.SetMessage(-1, 0, 0);
+
+        Debug.Log("用户尝试登陆信息回复：--- in --- ");
+        List<string> receivers = new List<string>();
+
+        receivers.Add(tryInfo.UserId);
+        if (_gameDataHandle.TryLoginEvent != null)
+        {
+            _gameDataHandle.TryLoginEvent(tryInfo.UserId, resMsg);
+        }
+
+        //Debug.Log(Qy_CSharp_NetWork.Tools.Json.JsonTools.ToJson(msg));
+        _lookAtMe.PushMsgToOther(resMsg, receivers.ToArray(), false, true);
+        Debug.Log("用户尝试登陆信息回复：--- out --- ");
+
+    }
+
+    public void LogginOutPlayer(JsonData data)
+    {
+        //获取到断开连接的用户
+        string userId = (string)data["userId"];
+        Debug.LogError("玩家" + userId + "退出了游戏");
+        PlayerModule.Instance.RemovePlayer(userId);
+
+    }
     public void ResponseTryLoginMsg(string receiver, MsgTryLoginRes msg)
     {
         Debug.Log("用户尝试登陆信息回复：--- in --- ");
@@ -134,6 +170,7 @@ public class NetWork : MonoBehaviour
     {
         Debug.Log("收到验证成功");
         CreatCode.CreatCode(url);     //返回生成二维码
+        StartCoroutine(Wait(5));
         GameStarusIsReady();
     }
     /// <summary>
@@ -148,7 +185,13 @@ public class NetWork : MonoBehaviour
 
     private void OnDestroy()
     {
-        
+
         LookAtMe.Dispose();
+        Debug.Log("游戏退出");
+    }
+
+    public IEnumerator Wait(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 }
