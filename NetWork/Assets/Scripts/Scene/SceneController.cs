@@ -35,22 +35,20 @@ namespace WJH
         /// </summary>
         /// <param name="sceneName">切换到目标场景</param>
         /// <param name="action">切换到目标场景后要做的事情</param>
-        public void ChangeScene(string sceneName, Action action = null)
+        public void ChangeScene(string sceneName, Action action = null, float time = 0.1f)
         {
             SceneManager.LoadScene("loadingScene", LoadSceneMode.Additive);
 
-            StartCoroutine(LoadScene(sceneName, action));
+            StartCoroutine(LoadScene(sceneName, action,time));
         }
 
-        IEnumerator LoadScene(string sceneName, Action action)
+        IEnumerator LoadScene(string sceneName, Action action,float time = 0.1f)
         {
+            yield return new WaitForSeconds(time);
             async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             async.allowSceneActivation = false;
             print(async.progress);
             float value = async.progress;
-            //场景加载好后不自动切换
-
-
 
             while (async.progress < 0.9f)
             {
@@ -58,15 +56,9 @@ namespace WJH
                 print("加载进度:      " + async.progress);
             }
             value = 0.9f;
-            while (value < 1f)
-            {
-                value += 0.01f;
-                yield return new WaitForSeconds(0.1f);
-            }
-            yield return async;
-            yield return new WaitForSeconds(2f);
             SceneManager.UnloadSceneAsync("loadingScene");
-            ; async.allowSceneActivation = true;
+
+            async.allowSceneActivation = true;
             if (action != null)
             {
                 action();

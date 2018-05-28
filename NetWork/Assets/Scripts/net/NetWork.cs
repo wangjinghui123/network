@@ -126,7 +126,6 @@ namespace WJH
 
             _gameDataHandle.LoginOut += LogginOutPlayer;
             GameDataHandle.LoginIn += GameDataHandle_LoginIn;
-            //Debug.Log(m_netOption + "," + deviceIds[0] + "," + deviceIds[1]);
             LookAtMe.StartLAM(m_netOption, 12 * 1000, deviceIds.ToArray());
 
         }
@@ -164,7 +163,7 @@ namespace WJH
             tryInfo.UserId = jsonData["userId"].ToString();
             PlayerData tempLoginInfo = PlayerModule.Instance.GetPlayerDataByID(tryInfo.UserId);
             MsgTryLoginRes resMsg = new MsgTryLoginRes();
-            if (tempLoginInfo==null)
+            if (tempLoginInfo == null)
             {
                 resMsg.SetMessage(-1, 0, 0);
             }
@@ -172,7 +171,7 @@ namespace WJH
             {
                 resMsg.SetMessage(tempLoginInfo.modelType, 0, 0);
             }
-            
+
             Debug.Log("用户尝试登陆信息回复：--- in --- ");
             List<string> receivers = new List<string>();
 
@@ -230,7 +229,7 @@ namespace WJH
         {
             Debug.LogError(" --------------_GameStarusIsReady -------------- ");
             LookAtMe.PushGameStatus("1", true, true);
-            SceneController.Instance.ChangeScene("main", ChangeSceneHandler);
+            SceneController.Instance.ChangeScene("main", ChangeSceneHandler, 3f);
         }
         /// <summary>
         /// 切换到场景回调
@@ -240,16 +239,17 @@ namespace WJH
             ///游戏准备好了要做的事情
             GameDataHandle.GameReadyImpl();
 
+            CodeController.Instance.SetAlpha();
             ///倒计时结束
             GameController.Instance.OnReadyEndTime += (() =>
             {
+                
                 GameStarusIsGame();
             });
 
             GameController.Instance.InitTime();
             //_uiAnimation.readyTime.readyTimeDoneEvent -= _GameStarusIsSundGlass;
             Debug.LogError("-------------- _GameStarusIsSundGlass -------------- ");
-
         }
         private void OnDestroy()
         {

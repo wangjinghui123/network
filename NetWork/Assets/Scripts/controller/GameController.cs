@@ -35,7 +35,7 @@ namespace WJH
         {
             OnReadyTime += ((time) =>
             {
-                Debug.LogError(time);
+                
             });
 
 
@@ -62,7 +62,6 @@ namespace WJH
                     {
                         OnReadyTime(Mathf.Floor(time));
                     }
-                    Debug.Log("正在倒计时:" + Mathf.Floor(time));
                 }
                 else
                 {
@@ -71,7 +70,6 @@ namespace WJH
                         OnReadyEndTime();
                     }
                     OnStart = false;
-                    Debug.Log("倒计时结束");
                 }
             }
         }

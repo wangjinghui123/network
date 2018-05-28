@@ -2,222 +2,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
-
+using System.IO;
+using Qy_CSharp_NetWork.Tools.Json;
+using Newtonsoft.Json.Linq;
 
 namespace WJH
 {
     public class EasyConfig : MonoBehaviour
     {
-        public string ConfigFileName = "DeployXML/Config.xml"; // In StreamingAssets folder.
+        public string ConfigFileName = "DeployXML/database.json"; // In StreamingAssets folder.
         public KeyCode ReloadKey = KeyCode.F5;
 
-        private Dictionary<string, string> configDict;
+        private Dictionary<int, Config_Pos> configDict;
 
-        public bool GetBool(string key)
+        public Dictionary<int, Config_Pos> ConfigDict
         {
-            return GetBool(key, false);
-        }
-
-        public bool GetBool(string key, bool defaultVal)
-        {
-            bool val = defaultVal;
-            if (configDict.ContainsKey(key))
+            get
             {
-                try
+                if (configDict == null)
                 {
-                    bool.TryParse(configDict[key], out val);
+                    configDict = new Dictionary<int, Config_Pos>();
+
                 }
-                catch (System.Exception ex)
-                {
-                    Debug.LogWarning(ex.Message);
-                    Debug.LogError("Try to parse bool failed " + configDict[key]);
-                }
+                return configDict;
             }
-
-            return val;
         }
 
-        public void SetBool(string key, bool val)
+        public Config_Pos GetPosData(int status)
         {
-            SetVal(key, val.ToString());
-        }
-
-        public int GetInt(string key)
-        {
-            //Debug.Log(ConfigFileName);
-            return GetInt(key, 0);
-        }
-
-        public int GetInt(string key, int defaultVal)
-        {
-            int val = defaultVal;
-            if (configDict.ContainsKey(key))
+            if (ConfigDict.Count==0)
             {
-                try
-                {
-                    int.TryParse(configDict[key], out val);
-                }
-                catch (System.Exception ex)
-                {
-                    Debug.LogWarning(ex.Message);
-                    Debug.LogError("Try to parse int failed " + configDict[key]);
-                }
+                SetConfig();
             }
-
-            return val;
+            return ConfigDict[status];
         }
 
-        public void SetInt(string key, int val)
-        {
-            SetVal(key, val.ToString());
-        }
 
-        public float GetFloat(string key)
+        public void SetConfig()
         {
-            return GetFloat(key, 0);
-        }
+            string ret = File.ReadAllText(Application.streamingAssetsPath + "/" + ConfigFileName);
+            JsonData data = JsonTools.GetJsonData(ret);
+            JToken token = data["config_code"];
 
-        public float GetFloat(string key, float defaultVal)
-        {
-            float val = defaultVal;
-            if (configDict.ContainsKey(key))
+            foreach (var item in token)
             {
-                try
-                {
-                    float.TryParse(configDict[key], out val);
-                }
-                catch (System.Exception ex)
-                {
-                    Debug.LogWarning(ex.Message);
-                    Debug.LogError("Try to parse float failed " + configDict[key]);
-                }
+                Config_Pos pos = item.ToObject<Config_Pos>();
+                ConfigDict.Add(pos.status, pos);
             }
-
-            return val;
         }
-
-        public void SetFloat(string key, float val)
+        [System.Serializable]
+        public class Config_Pos
         {
-            SetVal(key, val.ToString());
-        }
-
-        public string GetString(string key)
-        {
-            return GetString(key, "");
-        }
-
-        public string GetString(string key, string defaultVal)
-        {
-            string val = defaultVal;
-            if (configDict.ContainsKey(key))
+            public int x, y, width, height,status;
+            public override string ToString()
             {
-                val = configDict[key];
+                return string.Format("status:{4},x:{0},y:{1},width:{2},height:{3}", x, y, width, height,status);
             }
-
-            return val;
-        }
-
-        public void SetString(string key, string val)
-        {
-            SetVal(key, val.ToString());
-        }
-
-        void Awake()
-        {
-            configDict = new Dictionary<string, string>();
-
-            ParseConfig();
-        }
-
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            //if (Input.GetKeyDown(ReloadKey))
-            //{
-            //    ParseConfig();
-            //}
-        }
-
-        void ParseConfig()
-        {
-            configDict.Clear();
-            string path = System.IO.Path.Combine(Application.streamingAssetsPath, ConfigFileName);
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(path);
-
-            XmlNode root = xmlDoc.DocumentElement;
-
-            XmlNodeList nodeList = root.ChildNodes;
-            for (int i = 0; i < nodeList.Count; i++)
-            {
-                XmlNode curNode = nodeList[i];
-                string key = curNode.Name;
-                string val = curNode.InnerText;
-
-                if (!configDict.ContainsKey(key))
-                {
-                    configDict.Add(key, val);
-                }
-                else
-                {
-                    Debug.LogError("Duplicated key " + key + " in config file " + path);
-                }
-            }
-
-
-        }
-
-        void SetVal(string key, string val)
-        {
-            if (configDict.ContainsKey(key))
-            {
-                configDict[key] = val;
-            }
-            else
-            {
-                configDict.Add(key, val);
-            }
-
-            UpdateXml(key, val);
-        }
-
-        void UpdateXml(string key, string val)
-        {
-            string path = System.IO.Path.Combine(Application.streamingAssetsPath, ConfigFileName);
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(path);
-
-            XmlNode root = xmlDoc.DocumentElement;
-
-            XmlNodeList nodeList = root.ChildNodes;
-
-            bool found = false;
-            for (int i = 0; i < nodeList.Count; i++)
-            {
-                XmlNode curNode = nodeList[i];
-                if (curNode.Name == key)
-                {
-                    curNode.InnerText = val;
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-            {
-                XmlNode node = xmlDoc.CreateNode(XmlNodeType.Element, key, null);
-                node.InnerText = val;
-                root.AppendChild(node);
-            }
-
-            xmlDoc.Save(path);
-            //Debug.Log(xmlDoc.InnerXml);
         }
     }
 }
