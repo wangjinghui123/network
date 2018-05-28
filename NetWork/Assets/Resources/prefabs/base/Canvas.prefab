@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224375526045995200}
   - component: {fileID: 222340163768418272}
   - component: {fileID: 114090182924882490}
+  - component: {fileID: 114201074638428968}
   m_Layer: 5
   m_Name: loginView
   m_TagString: Untagged
@@ -87,6 +88,7 @@ GameObject:
   - component: {fileID: 224215976268961294}
   - component: {fileID: 222977545005188652}
   - component: {fileID: 114732983848846578}
+  - component: {fileID: 223406369334649392}
   - component: {fileID: 114628752826382492}
   m_Layer: 5
   m_Name: RawImage
@@ -128,14 +130,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.253}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 46888bab086fc9f4f8b4d49f8eac6944, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -143,6 +145,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114201074638428968
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1169081056555674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c377c704a85d7d4db0735c1d9a86e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114283858039736546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -223,6 +236,26 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1936635307491158}
+--- !u!223 &223406369334649392
+Canvas:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1936635307491158}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 3
+  m_TargetDisplay: 0
 --- !u!223 &223867561970060216
 Canvas:
   m_ObjectHideFlags: 1

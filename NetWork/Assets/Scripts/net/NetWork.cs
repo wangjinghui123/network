@@ -229,7 +229,7 @@ namespace WJH
         {
             Debug.LogError(" --------------_GameStarusIsReady -------------- ");
             LookAtMe.PushGameStatus("1", true, true);
-            SceneController.Instance.ChangeScene("main", ChangeSceneHandler, 3f);
+            SceneController.Instance.ChangeScene("Scene02", ChangeSceneHandler, 3f);
         }
         /// <summary>
         /// 切换到场景回调

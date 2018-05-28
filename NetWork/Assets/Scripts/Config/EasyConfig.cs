@@ -40,7 +40,9 @@ namespace WJH
 
         public void SetConfig()
         {
+            
             string ret = File.ReadAllText(Application.streamingAssetsPath + "/" + ConfigFileName);
+            Debug.LogError(ret);
             JsonData data = JsonTools.GetJsonData(ret);
             JToken token = data["config_code"];
 
