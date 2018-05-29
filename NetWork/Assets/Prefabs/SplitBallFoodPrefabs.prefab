@@ -22,6 +22,9 @@ GameObject:
   - component: {fileID: 222001101015459646}
   - component: {fileID: 114154072415459072}
   - component: {fileID: 58630765429789298}
+  - component: {fileID: 50105830759675572}
+  - component: {fileID: 114986450923263422}
+  - component: {fileID: 114074684211025612}
   m_Layer: 0
   m_Name: SplitBallFoodPrefabs
   m_TagString: SplitBallFood
@@ -29,6 +32,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!50 &50105830759675572
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033531973765346}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.1
+  m_LinearDrag: 1.22
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!58 &58630765429789298
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -38,12 +61,23 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.4, y: 0.43}
   serializedVersion: 2
   m_Radius: 13.43
+--- !u!114 &114074684211025612
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033531973765346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a42d8ab7bb3d0de47aad3167c9755c63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114154072415459072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -71,6 +105,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114986450923263422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033531973765346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8818765cbc3bbd449d7d921f929e64c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  splitFoodMass: 50
+  maxStarFoodMass: 100
+  minStarFoodMass: 8
 --- !u!222 &222001101015459646
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -83,7 +131,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1033531973765346}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
