@@ -35,7 +35,7 @@ namespace WJH
         {
             OnReadyTime += ((time) =>
             {
-                
+
             });
 
 
@@ -48,6 +48,25 @@ namespace WJH
             maxTime = time;
             this.time = 0;
             OnStart = true;
+            InitSceneData();
+        }
+
+
+        public void InitSceneData()
+        {
+            List<PlayerData> data = PlayerModule.Instance.GetAllPlayer();
+            if (data.Count == 0)
+            {
+                Debug.LogError("还没有人加入");
+                return;
+            }
+            foreach (PlayerData item in data)
+            {
+                //进行玩家数据的初始化
+                Debug.LogError("玩家数据:"+item);
+            }
+
+
         }
 
         // Update is called once per frame
