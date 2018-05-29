@@ -16,7 +16,7 @@ public class Cells : MonoBehaviour {
         InitBall();
     }
 
-    public void InitBall()
+    public void InitBall()  
     {
         ballSpriteIndex = Random.Range(0, playerManager.ballSprites.Length);
         cellSprite = playerManager.ballSprites[ballSpriteIndex];
