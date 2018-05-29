@@ -12,7 +12,7 @@ public class ShortTimeAnimation : MonoBehaviour
 {
     public EventHandler readyTimeDoneEvent;
     public GameObject runTime;
-    public int readyTime = 10;
+    public int readyTime = 5;
 
     [SerializeField]
     private Image _number;
@@ -31,6 +31,7 @@ public class ShortTimeAnimation : MonoBehaviour
     void OnEnable()
     {
         _ChangeTheNumber();
+        Debug.Log("准备测试");
     }
     private void _ChangeTheNumber()
     {

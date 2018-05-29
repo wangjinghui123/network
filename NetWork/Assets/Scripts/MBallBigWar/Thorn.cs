@@ -22,7 +22,6 @@ public class Thorn : MonoBehaviour {
                 other.GetComponent<BallProperty>().BallSplit();
                 thornManager.isSpawnThorn = true;
                 Destroy(gameObject );
-
             }
         }
     }
