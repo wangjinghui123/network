@@ -44,6 +44,7 @@ namespace WJH
 
         IEnumerator LoadScene(string sceneName, Action action,float time = 0.1f)
         {
+            Debug.LogError(time);
             yield return new WaitForSeconds(time);
             async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             async.allowSceneActivation = false;
