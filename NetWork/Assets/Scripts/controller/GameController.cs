@@ -24,7 +24,7 @@ namespace WJH
             }
         }
 
-        public Action<float> OnReadyTime;
+        public Action<int> OnReadyTime;
         public Action OnReadyEndTime;
         private void Awake()
         {
@@ -33,12 +33,7 @@ namespace WJH
 
         private void Start()
         {
-            OnReadyTime += ((time) =>
-            {
-
-            });
-
-
+            ReadyController.Instance.OnReady();
         }
         /// <summary>
         /// 倒计时
@@ -49,13 +44,14 @@ namespace WJH
             this.time = 0;
             OnStart = true;
             InitSceneData();
+            ReadyController.Instance.StartReady();
         }
 
 
         public void InitSceneData()
         {
             List<PlayerData> data = PlayerModule.Instance.GetAllPlayer();
-            if (data.Count == 0)
+            if (data == null || data.Count == 0)
             {
                 Debug.LogError("还没有人加入");
                 return;
@@ -63,7 +59,7 @@ namespace WJH
             foreach (PlayerData item in data)
             {
                 //进行玩家数据的初始化
-                Debug.LogError("玩家数据:"+item);
+                Debug.LogError("玩家数据:" + item);
             }
 
 
@@ -79,7 +75,7 @@ namespace WJH
                 {
                     if (OnReadyTime != null)
                     {
-                        OnReadyTime(Mathf.Floor(time));
+                        OnReadyTime(Mathf.FloorToInt(time));
                     }
                 }
                 else

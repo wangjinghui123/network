@@ -99,7 +99,7 @@ namespace WJH
                 token = "WkE8fSqkq3Zm1Mfruj61uK0zj0OaScOF0znl";//
                 deviceIds.Clear();
                 deviceIds.Add("4000");
-                deviceIds.Add("6005");
+                deviceIds.Add("6006");
                 //token = "91yrf3qkqstxlix3rlvouwvjaxrk28fflgwh";//自己
                 //deviceIds.Clear();
                 //deviceIds.Add("10000");
@@ -229,25 +229,24 @@ namespace WJH
         {
             Debug.LogError(" --------------_GameStarusIsReady -------------- ");
             LookAtMe.PushGameStatus("1", true, true);
-            SceneController.Instance.ChangeScene("Scene02", ChangeSceneHandler, 3f);
+            SceneController.Instance.ChangeScene("Scene02", ChangeSceneHandler, Utils.WAIT_TIME);
         }
         /// <summary>
         /// 切换到场景回调
         /// </summary>
         public void ChangeSceneHandler()
         {
-            ///游戏准备好了要做的事情
-            GameDataHandle.GameReadyImpl();
-
+            GameController.Instance.InitTime(Utils.READY_TIME);
             CodeController.Instance.SetAlpha();
             ///倒计时结束
             GameController.Instance.OnReadyEndTime += (() =>
             {
-                
+                ///游戏准备好了要做的事情
+                GameDataHandle.GameReadyImpl();
                 GameStarusIsGame();
             });
 
-            GameController.Instance.InitTime();
+
             //_uiAnimation.readyTime.readyTimeDoneEvent -= _GameStarusIsSundGlass;
             Debug.LogError("-------------- _GameStarusIsSundGlass -------------- ");
         }
