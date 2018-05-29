@@ -10933,9 +10933,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7b09947e4aa80e4aa459e1ddda69b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMoveSpeed: 80
-  playerRotationSpeed: 10
   touch: {fileID: 1605236300}
+  dir: {x: 0, y: 0, z: 0}
 --- !u!50 &1447533533
 Rigidbody2D:
   serializedVersion: 4
@@ -10992,11 +10991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a880139288f1eea46878bf0c36b8d1fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 0
-  isAvatar: 0
-  isOnDrag: 0
-  entity_name: 
-  scrollCircle: {fileID: 0}
+  cellSplitSpeed: 40
 --- !u!1 &1459805517
 GameObject:
   m_ObjectHideFlags: 0

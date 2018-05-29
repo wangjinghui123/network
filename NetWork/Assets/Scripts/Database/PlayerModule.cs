@@ -85,6 +85,12 @@ namespace WJH
             }
         }
         private modleType _modleType;
+
+
+        public override string ToString()
+        {
+            return string.Format("nickName:{0},userId:{1},modelType:{2},\n, headimgurl:{3}",nickName,userId,modelType,headimgurl);
+        }
     }
 
 
