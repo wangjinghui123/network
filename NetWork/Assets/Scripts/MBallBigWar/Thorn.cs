@@ -9,13 +9,8 @@ public class Thorn : MonoBehaviour {
     private void Start()
     {
         _thornScale = this.transform.localScale;
-        if (thornManager==null )
-        {
-            thornManager = transform.parent.GetComponent<ThornManager>();
-        }
-       
+        thornManager = transform.parent.GetComponent<ThornManager>();
     }
-
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other .tag =="Player")

@@ -24,7 +24,6 @@ GameObject:
   - component: {fileID: 58630765429789298}
   - component: {fileID: 50105830759675572}
   - component: {fileID: 114986450923263422}
-  - component: {fileID: 114074684211025612}
   m_Layer: 0
   m_Name: SplitBallFoodPrefabs
   m_TagString: SplitBallFood
@@ -67,17 +66,6 @@ CircleCollider2D:
   m_Offset: {x: -0.4, y: 0.43}
   serializedVersion: 2
   m_Radius: 13.43
---- !u!114 &114074684211025612
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1033531973765346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a42d8ab7bb3d0de47aad3167c9755c63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114154072415459072
 MonoBehaviour:
   m_ObjectHideFlags: 1

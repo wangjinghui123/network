@@ -6699,7 +6699,13 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 50105830759675572, guid: 63e8a34e766ba7b41a269298afe3f585,
+        type: 2}
+      propertyPath: m_LinearDrag
+      value: 0.29
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114074684211025612, guid: 63e8a34e766ba7b41a269298afe3f585, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 63e8a34e766ba7b41a269298afe3f585, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &797084384
@@ -8765,44 +8771,22 @@ Prefab:
       objectReference: {fileID: 1605236300}
     - target: {fileID: 61887736681994822, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
         type: 2}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 50613604652191032, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
-        type: 2}
-      propertyPath: m_LinearDrag
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 50613604652191032, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
-        type: 2}
-      propertyPath: m_Mass
-      value: 0.37
-      objectReference: {fileID: 0}
-    - target: {fileID: 50613604652191032, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
-        type: 2}
-      propertyPath: m_AngularDrag
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 50613604652191032, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
-        type: 2}
-      propertyPath: m_GravityScale
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 50613604652191032, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
+    - target: {fileID: 114059984384908080, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
         type: 2}
-      propertyPath: m_Simulated
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114059984384908080, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
+    - target: {fileID: 1365414447475772, guid: 9d6fe8c6cfe401b4db516075b8fd7bac, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114206511398129450, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
         type: 2}
-      propertyPath: splitBallFood
-      value: 
-      objectReference: {fileID: 1033531973765346, guid: 63e8a34e766ba7b41a269298afe3f585,
-        type: 2}
-    - target: {fileID: 114059984384908080, guid: 9d6fe8c6cfe401b4db516075b8fd7bac,
-        type: 2}
-      propertyPath: cellSplitSpeed
-      value: 100
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9d6fe8c6cfe401b4db516075b8fd7bac, type: 2}
@@ -11029,7 +11013,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1359121991
 RectTransform:
   m_ObjectHideFlags: 0

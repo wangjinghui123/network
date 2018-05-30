@@ -83,6 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8818765cbc3bbd449d7d921f929e64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  splitFoodMass: 50
   maxStarFoodMass: 100
   minStarFoodMass: 8
 --- !u!222 &222533576796649844

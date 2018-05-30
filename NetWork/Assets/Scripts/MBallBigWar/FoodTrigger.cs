@@ -54,15 +54,15 @@ public class FoodTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-
+            other.transform.parent.GetComponent<Cells >().isInvincible =false ;
             if (curFoodType == FoodType.SplitFood)
             {
-                other.gameObject.GetComponent<BallProperty>().BallDevourFood(splitFoodMass);
+                other.gameObject.GetComponent<BallProperty>().BallDevourFood(splitFoodMass,1);
                 Destroy(gameObject);
             }
             else if (curFoodType == FoodType.StarFood )
             {
-                other.gameObject.GetComponent<BallProperty>().BallDevourFood(_starFoodMass);
+                other.gameObject.GetComponent<BallProperty>().BallDevourFood(_starFoodMass,1);
                 transform.parent.GetComponent<FoodManager>().MoveFoodPos(gameObject);
             }
 
@@ -74,4 +74,7 @@ public class FoodTrigger : MonoBehaviour
         StarFood,
         SplitFood
     }
+
+   
+
 }
