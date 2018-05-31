@@ -12,7 +12,7 @@ public class FoodManager : MonoBehaviour
     public List<GameObject> foodObjList = new List<GameObject>();
     public int _maxFoodCount = 100;
 
-    private RectTransform foodManagerRect;
+   
     public RectTransform LeftUpPoint;
     public RectTransform RightDownPoint;
     public GameObject starFoodPrefab;
@@ -31,7 +31,7 @@ public class FoodManager : MonoBehaviour
 
     private void Start()
     {
-        foodManagerRect = this.GetComponent<RectTransform>();
+      
         for (int i = 0; i < _maxFoodCount; i++)
         {
             foodObjList.Add(SpawnFood());
@@ -52,7 +52,7 @@ public class FoodManager : MonoBehaviour
             obj.transform.position = RandomGamePos();
             Image image = obj.GetComponent<Image>();
             image.color = colors[Random.Range(0, colors.Length - 1)];
-            image.sprite = foodSprites[Random.Range(0, foodSprites.Length)];
+            image.sprite = foodSprites[Random.Range(0, foodSprites.Length)]; 
 
             return obj;
 

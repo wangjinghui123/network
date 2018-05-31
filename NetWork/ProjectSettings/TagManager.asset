@@ -9,6 +9,7 @@ TagManager:
   - SplitBallFood
   - ThornBall
   - StarFood
+  - touch
   layers:
   - Default
   - TransparentFX

@@ -11,7 +11,6 @@ public class BallProperty : MonoBehaviour
     public Vector3 direction = Vector3.zero;//移动方向
 
     private Vector2 _position = Vector2.zero;
-    private Vector2 _eulerAngles = Vector2.zero;
     private float _speed = 10f;
     private Vector3 _scale = Vector3.one;
     private float _playerMass = 0;//玩家mass
@@ -20,10 +19,9 @@ public class BallProperty : MonoBehaviour
     private move moveCtrl;//脚本获取移动方向
     private Sprite splitFoodTexture;
     private Tweener tweener = null;//dotweener用于实例化食物的初始移动动画;
-    private Cells cells;
+   
 
-
-    private Rigidbody2D rigidbody2D;
+   
     private PlayersManager playerManager;
     private RectTransform leftUpPoint;
     private RectTransform rightDownPoint;
@@ -91,19 +89,15 @@ public class BallProperty : MonoBehaviour
 
     private void Start()
     {
-
-
-        rigidbody2D = this.GetComponent<Rigidbody2D>();
-        ballRectTransform = this.GetComponent<RectTransform>();
+        ballRectTransform = GetComponent<RectTransform>();
         gameObject.GetComponent<Image>().sprite = transform.parent.GetComponent<Cells>().cellSprite;
         _scale = ballRectTransform.localScale;
         playerManager = transform.parent.parent.GetComponent<PlayersManager>();
-        leftUpPoint = playerManager.GetComponent<PlayersManager>().LeftUpPoint;
+       
         rightDownPoint = playerManager.GetComponent<PlayersManager>().RightDownPoint;
+        leftUpPoint = playerManager.GetComponent<PlayersManager>().LeftUpPoint;
         moveCtrl = this.GetComponent<move>();
         splitFoodTexture = transform.parent.GetComponent<Cells>().splitFoodSprite;
-        cells = transform.parent.GetComponent<Cells >();
-
     }
 
     private void Update()
@@ -111,8 +105,6 @@ public class BallProperty : MonoBehaviour
         if (Input.GetKey(KeyCode.Q))
         {
             //吐球 
-
-
             curtime += Time.deltaTime;
             if (curtime >= alltime)
             {
@@ -124,18 +116,13 @@ public class BallProperty : MonoBehaviour
         {
             BallSplit();
             //分身
-
-
         }
         if (moveCtrl.dir != Vector3.zero)
         {
             direction = moveCtrl.dir;
         }
 
-      
     }
-
-
     /// <summary>
     /// 球球移动
     /// </summary>
@@ -145,12 +132,12 @@ public class BallProperty : MonoBehaviour
         dir.Normalize();
         if (dir != Vector3.zero)
         {
-            
+          //  Debug.Log(dir );
             _speed = (1 / ballRectTransform.localScale.x * 50);
             float radius = ballRectTransform.rect.width / 2.0f * ballRectTransform.localScale.x;
             if (ballRectTransform.position.x <= rightDownPoint.position.x - radius)
             {
-                // rigidbody2D.velocity = dir * _speed;
+               // Debug.Log(rightDownPoint.position.x);
                 transform.Translate(dir * Time.deltaTime * _speed);
             }
             else
@@ -183,7 +170,6 @@ public class BallProperty : MonoBehaviour
             {
                 ballRectTransform.position = new Vector3(ballRectTransform.position.x, rightDownPoint.position.y + radius, ballRectTransform.position.z);
             }
-
         }
     }
 
@@ -198,15 +184,15 @@ public class BallProperty : MonoBehaviour
         }
         // 分开  弹射 
         GameObject otherCell = InstantiateObj(direction, gameObject, ballRectTransform, transform.parent);
+        transform.parent.GetComponent<Cells>().cells.Add(otherCell );
         _scale = _scale / 2;
-       // ballRectTransform.localScale = _scale;
-        ballRectTransform.DOScale(_scale ,.8f);
+        // ballRectTransform.localScale = _scale;
+        ballRectTransform.DOScale(_scale, .8f);
         otherCell.transform.localScale = _scale;
-        
-       _playerMass /= 2;
+
+        _playerMass /= 2;
         addMassValue /= 2;
         //合并
-
     }
 
     /// <summary>
@@ -214,26 +200,24 @@ public class BallProperty : MonoBehaviour
     /// </summary>
     /// <param name="增加质量值"></param>
     /// <param name="增加质量值"></param>
-    public void BallDevourFood(float mass,float addvalue)
+    public void BallDevourFood(float mass, float addvalue)
     {
         _playerMass += mass;
         float y = Mathf.Log(addMassValue, 3f);
         _scale = new Vector3(y, y, y);
         if (_scale.x <= 1)
         {
-            addMassValue+=addvalue ;
+            addMassValue += addvalue;
         }
         else
         {
             //ballRectTransform.localScale = _scale;
-            ballRectTransform.DOScale(_scale ,.8f);
+            ballRectTransform.DOScale(_scale, .8f);
             addMassValue++;
         }
 
         //  Debug.Log("=====================================" + _playerMass + "===============================");
     }
-
-
     /// <summary>
     /// 球球吐球
     /// </summary>
@@ -253,9 +237,8 @@ public class BallProperty : MonoBehaviour
             float scalex = Mathf.Log(addMassValue, 3f);
             _scale = new Vector3(scalex, scalex, scalex);
             // ballRectTransform.localScale = _scale;
-            ballRectTransform.DOScale(_scale ,.8f);
+            ballRectTransform.DOScale(_scale, .8f);
         }
-
     }
 
     /// <summary>
@@ -305,15 +288,13 @@ public class BallProperty : MonoBehaviour
 
     }
 
-   
-
     private void OnTriggerStay2D(Collider2D other)
     {
         //如果碰到玩家
         if (other.gameObject.tag == "Player")
         {
             //检测是是否覆盖自己
-            float distance = Vector3.Distance(transform .position ,other .transform .position );
+            float distance = Vector3.Distance(transform.position, other.transform.position);
             float radius = ballRectTransform.rect.width * ballRectTransform.localScale.x / 2.0f;
             //如果距离非常近
             if (distance < radius / 2.0f)
@@ -324,7 +305,7 @@ public class BallProperty : MonoBehaviour
             else if (distance < radius)
             {
                 //如果是自己
-                if (transform.parent.gameObject == other.transform.parent.gameObject)
+                if (transform.parent.gameObject == other.transform.parent.gameObject && transform.localScale.x > other.transform.localScale.x)
                 {
                     BallDevourFood(other.GetComponent<BallProperty>()._playerMass, 10);
                     Destroy(other.gameObject);
@@ -335,11 +316,11 @@ public class BallProperty : MonoBehaviour
                     //比较敌人与自己的Scale大小
                 }
             }
-           
-           // Debug.Log("碰到自己");
+
+            // Debug.Log("碰到自己");
         }
 
-       
+
     }
 
 

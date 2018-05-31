@@ -23,8 +23,8 @@ GameObject:
   - component: {fileID: 114173041289995788}
   - component: {fileID: 50613604652191032}
   - component: {fileID: 61887736681994822}
-  - component: {fileID: 114206511398129450}
   - component: {fileID: 114059984384908080}
+  - component: {fileID: 114670040641389144}
   m_Layer: 8
   m_Name: Cell
   m_TagString: Player
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114206511398129450
+--- !u!114 &114670040641389144
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -164,7 +164,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touch: {fileID: 0}
+  dirRocker: {x: 0, y: 0, z: 0}
   dir: {x: 0, y: 0, z: 0}
+  personState: 0
 --- !u!114 &114702165873332958
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -213,6 +215,10 @@ MonoBehaviour:
   cellSprite: {fileID: 0}
   splitFoodSprite: {fileID: 0}
   ballSpriteIndex: 0
+  isInvincible: 1
+  isDeath: 0
+  startSurvivalTime: 0
+  survivalTime: 0
 --- !u!222 &222180584049048262
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -278,6 +284,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -29.82, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
