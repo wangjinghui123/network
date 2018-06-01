@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ThornManager : MonoBehaviour {
+public class ThornManager : MonoBehaviour
+{
 
     public RectTransform leftUpPoint;
     public RectTransform rightDownPoint;
@@ -12,14 +13,27 @@ public class ThornManager : MonoBehaviour {
     public GameObject thornBallPrefab;
     public List<GameObject> thornsList = null;
     public bool isSpawnThorn = false;
+
+    static ThornManager _instance;
+    private void Awake()
+    {
+        _instance = this;
+    }
+    public static ThornManager Instance
+    {
+      get
+        {
+            return _instance;
+        }
+    }
     private void Start()
     {
-           maxThornBallCount = Random.Range(2,6);
-        for (int i=0;i<maxThornBallCount;i++)
+        maxThornBallCount = Random.Range(2, 6);
+        for (int i = 0; i < maxThornBallCount; i++)
         {
             SpawnThornBall();
         }
-        
+
     }
     public void SpawnThornBall()
     {
@@ -30,26 +44,26 @@ public class ThornManager : MonoBehaviour {
         obj.transform.position = thornVector3;
         Image image = obj.GetComponent<Image>();
         image.sprite = thornSprites[Random.Range(0, thornSprites.Length)];
-        float randomScale = Random.Range(.5f,5f);
-        obj.GetComponent<RectTransform>().localScale = new Vector3(randomScale ,randomScale ,randomScale );
-        thornsList.Add(obj );
+        float randomScale = Random.Range(.5f, 5f);
+        obj.GetComponent<RectTransform>().localScale = new Vector3(randomScale, randomScale, randomScale);
+        thornsList.Add(obj);
     }
 
     private void Update()
     {
         if (isSpawnThorn)
         {
-            if (thornsList .Count <=3)
+            if (thornsList.Count <= 3)
             {
-                StartCoroutine(SpawnThorn ());
+                StartCoroutine(SpawnThorn());
                 isSpawnThorn = false;
             }
         }
     }
     IEnumerator SpawnThorn()
     {
-        float random = Random.Range(5,10);
-        yield return new  WaitForSeconds(random );
+        float random = Random.Range(5, 10);
+        yield return new WaitForSeconds(random);
         SpawnThornBall();
     }
 }

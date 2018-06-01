@@ -163,10 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7b09947e4aa80e4aa459e1ddda69b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touch: {fileID: 0}
   dirRocker: {x: 0, y: 0, z: 0}
   dir: {x: 0, y: 0, z: 0}
-  personState: 0
 --- !u!114 &114702165873332958
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,6 +217,7 @@ MonoBehaviour:
   isDeath: 0
   startSurvivalTime: 0
   survivalTime: 0
+  personState: 0
 --- !u!222 &222180584049048262
 CanvasRenderer:
   m_ObjectHideFlags: 1
