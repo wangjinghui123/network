@@ -89,6 +89,7 @@ public class BallProperty : MonoBehaviour
 
     private void Start()
     {
+      
         ballRectTransform = GetComponent<RectTransform>();
         gameObject.GetComponent<Image>().sprite = transform.parent.GetComponent<Cells>().cellSprite;
         _scale = ballRectTransform.localScale;
@@ -98,6 +99,9 @@ public class BallProperty : MonoBehaviour
         leftUpPoint = playerManager.GetComponent<PlayersManager>().LeftUpPoint;
         moveCtrl = this.GetComponent<move>();
         splitFoodTexture = transform.parent.GetComponent<Cells>().splitFoodSprite;
+        playerManager.ballList.Add(this);
+
+
     }
 
     private void Update()

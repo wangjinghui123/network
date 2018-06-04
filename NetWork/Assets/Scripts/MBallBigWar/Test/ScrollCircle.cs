@@ -50,8 +50,7 @@ public class ScrollCircle : MonoBehaviour, IDragHandler, IEndDragHandler
     /// <param name="eventData"></param>  
     public void OnDrag(PointerEventData eventData)
     {
-
-       // Debug.Log("OnDrag==============================================================");
+        // Debug.Log("OnDrag==============================================================");
         //获取鼠标位置与初始位置之间的向量  
         Vector2 oppsitionVec = eventData.position - moveBackPos;
         //获取向量的长度  
@@ -60,7 +59,6 @@ public class ScrollCircle : MonoBehaviour, IDragHandler, IEndDragHandler
         float radius = Mathf.Clamp(distance, 0, maxRadius);
         //限制半径长度  
         transform.position = moveBackPos + oppsitionVec.normalized * radius;
-
     }
 
     /// <summary>  
