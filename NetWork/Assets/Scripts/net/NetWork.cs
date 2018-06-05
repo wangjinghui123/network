@@ -212,7 +212,6 @@ namespace WJH
             Debug.Log(Qy_CSharp_NetWork.Tools.Json.JsonTools.ToJson(msg));
             LookAtMe.PushMsgToOther(msg, receivers.ToArray(), false, true);
             Debug.Log("用户尝试登陆信息回复：--- out --- ");
-
         }
 
         private void OnRoomVerify(object sender, string url)

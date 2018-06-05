@@ -10,8 +10,14 @@ namespace WJH
 
     public enum modleType
     {
-        None = -1,
-        Module1 = 0,
+        monsters_1=1,
+        monsters_2 = 2,
+        monsters_3 = 3,
+        monsters_4 = 4,
+        monsters_5 = 5,
+        monsters_6 = 6,
+        monsters_7 = 7,
+        monsters_8 = 8
     }
 
     /// <summary>
