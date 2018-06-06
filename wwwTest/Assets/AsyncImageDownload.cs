@@ -3,11 +3,15 @@ using UnityEngine.UI;
 using System.Collections;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using System;
 
 public class AsyncImageDownload : MonoBehaviour
 {
     public Sprite placeholder;
-    public List<Texture2D > headImageList = new List<Texture2D>();
+    [SerializeField]
+    private List<Texture> headImageList = new List<Texture>();
     private static AsyncImageDownload _instance = null;
     public static AsyncImageDownload GetInstance() { return Instance; }
     public static AsyncImageDownload Instance
@@ -39,10 +43,10 @@ public class AsyncImageDownload : MonoBehaviour
 
     }
 
-    public void SetAsyncImage(string url)
+    public void SetAsyncImage(string url, RawImage image, Action<RawImage, Texture2D> action)
     {
 
-        StartCoroutine(DownloadImage(url));
+        StartCoroutine(DownloadImage(url, image, action));
         ////开始下载图片前，将UITexture的主图片设置为占位图  
         //// image.sprite = placeholder;
 
@@ -50,27 +54,25 @@ public class AsyncImageDownload : MonoBehaviour
         //if (!File.Exists(path + url.GetHashCode()))
         //{
         //    //如果之前不存在缓存文件  
-           
+
         //}
         //else
         //{
         //    StartCoroutine(LoadLocalImage(url));
         //}
     }
-
-    IEnumerator DownloadImage(string url)
+    public Sprite sprite;
+    IEnumerator DownloadImage(string url, RawImage image, Action<RawImage, Texture2D> action)
     {
         Debug.Log("downloading new image:" + path + url.GetHashCode());//url转换HD5作为名字  
         WWW www = new WWW(url);
-        yield return www;
-        Texture2D tex2d = www.texture;
-        //将图片保存至缓存路径  
-        //byte[] pngData = tex2d.EncodeToPNG();
-        //File.WriteAllBytes(path + url.GetHashCode(), pngData);
-       
-        Debug.Log("加載圖片");
-        headImageList.Add(tex2d);
-        Debug.Log("添加列表");
+        while (!www.isDone)
+        {
+            yield return www;
+        }
+
+        Texture2D texture2D = www.texture;
+        action(image, texture2D);
     }
 
     IEnumerator LoadLocalImage(string url)
@@ -83,8 +85,8 @@ public class AsyncImageDownload : MonoBehaviour
 
         Texture2D texture = www.texture;
         Sprite m_sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
-       
-       // image.sprite = m_sprite;
+
+        // image.sprite = m_sprite;
     }
 
     public string path
@@ -97,5 +99,20 @@ public class AsyncImageDownload : MonoBehaviour
         }
     }
 
+    public List<Texture> HeadImageList
+    {
+        get
+        {
+            if (headImageList == null)
+            {
+                headImageList = new List<Texture>();
+            }
+            return headImageList;
+        }
 
+        set
+        {
+            headImageList = value;
+        }
+    }
 }
