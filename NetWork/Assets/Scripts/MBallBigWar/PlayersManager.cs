@@ -105,14 +105,15 @@ namespace WJH
             {
 
                 Texture2D tex = www.texture;
-                byte[] spriteByte = tex.EncodeToPNG();
-                string filePath = Application.dataPath + "/Resources/HeadImage/" + i + ".jpg";
+               // byte[] spriteByte = tex.EncodeToPNG();
+               // string filePath = Application.dataPath + "/Resources/HeadImage/" + i + ".jpg";
                // File.WriteAllBytes(filePath, spriteByte);
                 i++;
 
-                Sprite sprite = Sprite.Create(tex, new Rect(0, 0, 40, 40), new Vector2(0.5f, 0.5f));
+                //  Sprite sprite = Sprite.Create(tex, new Rect(0, 0, 40, 40), new Vector2(0.5f, 0.5f));
+                this.GetComponent<Image>().sprite = Sprite.Create(tex,new Rect (0,0,40,40),new Vector2 (0.5f,0.5f));
                 double time = (double)Time.time - startTime;
-                tempsprite.Add(sprite);
+               // tempsprite.Add(sprite);
                 Debug.Log(tempsprite.Count + "tempSpriteCount");
             }
 
