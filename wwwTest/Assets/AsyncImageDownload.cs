@@ -68,7 +68,6 @@ public class AsyncImageDownload : MonoBehaviour
         byte[] pngData = tex2d.EncodeToPNG();
         File.WriteAllBytes(path + url.GetHashCode(), pngData);
         Sprite m_sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), new Vector2(0, 0));
-        Debug.Log("加載圖片");
         image.sprite = m_sprite;
        // headImageList.Add(tex2d);
         Debug.Log("添加列表");

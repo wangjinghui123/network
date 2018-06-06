@@ -21,7 +21,7 @@ namespace WJH
         public Sprite defaultHeadImage;//默认头像;
         private List<PlayerData> playerNpcList = new List<PlayerData>();
         public List<Cells> allplayerList = new List<Cells>();
-        private List<Sprite> tempsprite = new List<Sprite>();
+        public  List<Sprite> tempsprite = new List<Sprite>();
         static PlayersManager _instance;
         public static PlayersManager Instance
         {
@@ -81,7 +81,8 @@ namespace WJH
                 PlayerModule.Instance.Add(playerNpcList[i].userId, playerNpcList[i]);
                 Cells cellsClass = obj.GetComponent<Cells>();
                 // cellsClass._playerHeadSprite = LoadHeadImage(playerNpcList [i].headimgurl );
-                StartCoroutine(LoadHeadImage(playerNpcList[i].headimgurl));
+                Image image = this.GetComponent<Image >();
+                StartCoroutine(LoadHeadImage(playerNpcList[i].headimgurl, image));
                 Debug.Log(666);
 
                 cellsClass._userID = playerNpcList[i].userId;
@@ -95,7 +96,7 @@ namespace WJH
         }
         int i = 0;
 
-        private IEnumerator LoadHeadImage(string URL)
+        private IEnumerator LoadHeadImage(string URL,Image image)
         {
 
             double startTime = (double)Time.time;
@@ -103,17 +104,15 @@ namespace WJH
             yield return www;
             if (www != null && string.IsNullOrEmpty(www.error))
             {
-
                 Texture2D tex = www.texture;
                // byte[] spriteByte = tex.EncodeToPNG();
                // string filePath = Application.dataPath + "/Resources/HeadImage/" + i + ".jpg";
                // File.WriteAllBytes(filePath, spriteByte);
                 i++;
-
                 //  Sprite sprite = Sprite.Create(tex, new Rect(0, 0, 40, 40), new Vector2(0.5f, 0.5f));
-                this.GetComponent<Image>().sprite = Sprite.Create(tex,new Rect (0,0,40,40),new Vector2 (0.5f,0.5f));
+               image .sprite = Sprite.Create(tex,new Rect (0,0,tex.width ,tex .height ) ,new Vector2 (0.5f,0.5f));
                 double time = (double)Time.time - startTime;
-               // tempsprite.Add(sprite);
+                tempsprite.Add(image .sprite );
                 Debug.Log(tempsprite.Count + "tempSpriteCount");
             }
 
