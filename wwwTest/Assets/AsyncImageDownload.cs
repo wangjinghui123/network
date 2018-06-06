@@ -39,41 +39,42 @@ public class AsyncImageDownload : MonoBehaviour
 
     }
 
-    public void SetAsyncImage(string url)
+    public void SetAsyncImage(string url,Image image)
     {
 
-        StartCoroutine(DownloadImage(url));
-        ////开始下载图片前，将UITexture的主图片设置为占位图  
-        //// image.sprite = placeholder;
+        StartCoroutine(DownloadImage(url,image));
+        //开始下载图片前，将UITexture的主图片设置为占位图  
+        // image.sprite = placeholder;
 
-        ////判断是否是第一次加载这张图片  
-        //if (!File.Exists(path + url.GetHashCode()))
-        //{
-        //    //如果之前不存在缓存文件  
-           
-        //}
-        //else
-        //{
-        //    StartCoroutine(LoadLocalImage(url));
-        //}
+        //判断是否是第一次加载这张图片  
+        if (!File.Exists(path + url.GetHashCode()))
+        {
+            //如果之前不存在缓存文件  
+
+        }
+        else
+        {
+            StartCoroutine(LoadLocalImage(url,image));
+        }
     }
 
-    IEnumerator DownloadImage(string url)
+    IEnumerator DownloadImage(string url ,Image image)
     {
         Debug.Log("downloading new image:" + path + url.GetHashCode());//url转换HD5作为名字  
         WWW www = new WWW(url);
         yield return www;
         Texture2D tex2d = www.texture;
-        //将图片保存至缓存路径  
-        //byte[] pngData = tex2d.EncodeToPNG();
-        //File.WriteAllBytes(path + url.GetHashCode(), pngData);
-       
+        //将图片保存至缓存路径
+        byte[] pngData = tex2d.EncodeToPNG();
+        File.WriteAllBytes(path + url.GetHashCode(), pngData);
+        Sprite m_sprite = Sprite.Create(tex2d, new Rect(0, 0, tex2d.width, tex2d.height), new Vector2(0, 0));
         Debug.Log("加載圖片");
-        headImageList.Add(tex2d);
+        image.sprite = m_sprite;
+       // headImageList.Add(tex2d);
         Debug.Log("添加列表");
     }
 
-    IEnumerator LoadLocalImage(string url)
+    IEnumerator LoadLocalImage(string url,Image image)
     {
         string filePath = "file:///" + path + url.GetHashCode();
 
@@ -84,7 +85,7 @@ public class AsyncImageDownload : MonoBehaviour
         Texture2D texture = www.texture;
         Sprite m_sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
        
-       // image.sprite = m_sprite;
+        image.sprite = m_sprite;
     }
 
     public string path

@@ -197,7 +197,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1315bfe2c93218f4ea8718566aa5138a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteTest: {fileID: 2136470329}
+  spriteTest:
+  - {fileID: 1850665033}
+  - {fileID: 2136470329}
+  - {fileID: 1547067619}
+  - {fileID: 1765257755}
+  - {fileID: 1961671832}
   url:
   - http://boxact-1252079862.file.myqcloud.com/game/Weima_20180419/npc/p153f4-ux2.jpg
   - http://boxact-1252079862.file.myqcloud.com/game/Weima_20180419/npc/orf55z-23zj.jpg
