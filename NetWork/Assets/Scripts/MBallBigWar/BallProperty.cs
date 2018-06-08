@@ -201,7 +201,6 @@ namespace WJH
             addMassValue /= 2;
             //合并
         }
-
         /// <summary>
         /// 球球吞食食物 增加质量 增加Scale
         /// </summary>
@@ -323,19 +322,27 @@ namespace WJH
                     {
                         //比较敌人与自己的Scale大小
                         BallDevourFood(other.transform .parent .GetComponent <Cells >().playerMass , 10);
+                        //是否生成新的NPC?  如果可以生成
+                        if (IsResetSelf()  )
+                        {
+
+                        }
                         Destroy(other.gameObject);
                     }
                 }
-
                 // Debug.Log("碰到自己");
             }
-
+        }
+        public bool   IsResetSelf()
+        {
+            int childCount = transform.parent.transform.childCount;
+            return childCount > 1 ? false  : true  ;
+        }
+        IEnumerator  ReviveSelf()
+        {
+            yield return new WaitForSeconds(Random .Range (2.0f,4.0f));
 
         }
-
-
-
-
     }
 }
 

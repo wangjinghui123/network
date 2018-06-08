@@ -8,6 +8,7 @@ namespace WJH
 {
     public class PlayersManager : MonoBehaviour
     {
+        public Image tempImage;
 
         public List<BallProperty> ballList;//存储玩家
         public Sprite[] ballSprites;
@@ -17,11 +18,11 @@ namespace WJH
         public FoodManager FoodManagerRect;
         public GameObject cells;
         public float cellWith = 40;
-        public int npcCount = 8;
+        public int npcCount = 10;
         public Sprite defaultHeadImage;//默认头像;
         private List<PlayerData> playerNpcList = new List<PlayerData>();
         public List<Cells> allplayerList = new List<Cells>();
-        public  List<Sprite> tempsprite = new List<Sprite>();
+        public List<Sprite> tempsprite = new List<Sprite>();
         static PlayersManager _instance;
         public static PlayersManager Instance
         {
@@ -41,7 +42,7 @@ namespace WJH
         private void Start()
         {
 
-
+         
 
         }
 
@@ -55,6 +56,9 @@ namespace WJH
             PlayerData p6 = new PlayerData("冷落了♂自己·", "NPC_x0vzmp0e5h7brdjyotmkv0qwd8r0eopg", "http://boxact-1252079862.file.myqcloud.com/game/Weima_20180419/npc/oh7aq0-o8a.png", modleType.monsters_6);
             PlayerData p7 = new PlayerData("◆残留德花瓣", "NPC_urvc9dd9e9q53fwl3c5yy2kyy4oag624", "http://boxact-1252079862.file.myqcloud.com/game/Weima_20180419/npc/p085yo-1kcm.jpg", modleType.monsters_7);
             PlayerData p8 = new PlayerData("*丶 海阔天空", "NPC_cc2j28h0qaz7iivilz128zverojqbuqf", "http://boxact-1252079862.file.myqcloud.com/game/Weima_20180419/npc/p320aw-uh8.jpg", modleType.monsters_8);
+            PlayerData p9 = new PlayerData("*丶 海阔天空", "NPC_cc2j6280qaz7iivilz128zverojqbuqf", "http://boxact-1252079862.file.myqcloud.com/game/Weima_20180419/npc/p320aw-uh8.jpg", modleType.monsters_8);
+            PlayerData p10 = new PlayerData("*丶 海阔天空", "NPC_cc2j278h0qaz7iivilz128zverojqbuqf", "http://boxact-1252079862.file.myqcloud.com/game/Weima_20180419/npc/p320aw-uh8.jpg", modleType.monsters_8);
+
             playerNpcList.Add(p1);
             playerNpcList.Add(p2);
             playerNpcList.Add(p3);
@@ -63,11 +67,12 @@ namespace WJH
             playerNpcList.Add(p6);
             playerNpcList.Add(p7);
             playerNpcList.Add(p8);
-          
+            playerNpcList.Add(p9);
+            playerNpcList.Add(p10);
+
+
+
         }
-
-
-
         public void InitiaNPC(int NpcCount)
         {
             if (NpcCount == 0)
@@ -80,43 +85,78 @@ namespace WJH
                 GameObject obj = Instantiate(cells, transform);
                 PlayerModule.Instance.Add(playerNpcList[i].userId, playerNpcList[i]);
                 Cells cellsClass = obj.GetComponent<Cells>();
-                // cellsClass._playerHeadSprite = LoadHeadImage(playerNpcList [i].headimgurl );
-                Image image = this.GetComponent<Image >();
-                StartCoroutine(LoadHeadImage(playerNpcList[i].headimgurl, image));
-                Debug.Log(666);
-
+                Image image = this.GetComponent<Image>();
+                StartCoroutine(LoadHeadImage(playerNpcList[i].headimgurl, cellsClass ._playerHeadSprite ));
                 cellsClass._userID = playerNpcList[i].userId;
                 cellsClass._nickName = playerNpcList[i].nickName;
                 cellsClass.ballSpriteIndex = (playerNpcList[i].modelType) - 1;
                 obj.transform.position = pos;
                 cellsClass.personState = Cells.PersonState.NPC;
-                Debug.Log(999);
-                Debug.Log(888);
+                StartCoroutine(WaitLoad (cellsClass ,tempsprite ,i ));
+
             }
         }
-        int i = 0;
 
-        private IEnumerator LoadHeadImage(string URL,Image image)
+        public void ScoreSort(List <Cells > cellsList)
         {
+            for (int i=0;i<cellsList .Count-1;i++)
+            {
+                for (int j=0;j<cellsList .Count-1-i ;j++)
+                {
+                    if (cellsList [j].playerMass <cellsList [j+1].playerMass )
+                    {
+                        Cells temp = cellsList[j];
+                        cellsList[j] = cellsList[j+1];
+                        cellsList[j + 1] = temp;
+                    }
+                }
+            }
+            RankList.Instance.UpdateData();
+        }
 
+
+        int i = 0;
+        private IEnumerator LoadHeadImage(string URL, Sprite image)
+        {
             double startTime = (double)Time.time;
             WWW www = new WWW(URL);//只能放URL
             yield return www;
             if (www != null && string.IsNullOrEmpty(www.error))
             {
                 Texture2D tex = www.texture;
-               // byte[] spriteByte = tex.EncodeToPNG();
-               // string filePath = Application.dataPath + "/Resources/HeadImage/" + i + ".jpg";
-               // File.WriteAllBytes(filePath, spriteByte);
+                // byte[] spriteByte = tex.EncodeToPNG();
+                // string filePath = Application.dataPath + "/Resources/HeadImage/" + i + ".jpg";
+                // File.WriteAllBytes(filePath, spriteByte);
                 i++;
                 //  Sprite sprite = Sprite.Create(tex, new Rect(0, 0, 40, 40), new Vector2(0.5f, 0.5f));
-               image .sprite = Sprite.Create(tex,new Rect (0,0,tex.width ,tex .height ) ,new Vector2 (0.5f,0.5f));
+                image = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
                 double time = (double)Time.time - startTime;
-                tempsprite.Add(image .sprite );
-                Debug.Log(tempsprite.Count + "tempSpriteCount");
+                tempsprite.Add(image);
+                //  Debug.Log(tempsprite.Count + "tempSpriteCount");
             }
+        }
+        private IEnumerator WaitLoad(Cells  cellsClass,List <Sprite> tempSprite,int i)
+        {
+            yield return new  WaitForSeconds(.2f);
+            cellsClass._playerHeadSprite = tempSprite[i];
 
         }
+
+
+        private float alltime = 0.5f;
+        private float nowtime = 0;
+
+        public void Update()
+        {
+            nowtime += Time.deltaTime;
+            if (nowtime >=alltime )
+            {
+                ScoreSort(allplayerList);
+                nowtime = 0;
+            }
+        }
+
+
     }
 }
 

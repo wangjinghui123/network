@@ -203,32 +203,28 @@ namespace WJH
             }
             return null;
         }
-
-
         public void Add(string userID, PlayerData data)
         {
-
             if (PlayerdataDic.ContainsKey(userID))
             {
                 Debug.LogException(new System.Exception("已存在该玩家:" + userID));
+                Debug.Log("已存在" + userID);
             }
             else
             {
+               // Debug.Log("不存在" + userID);
                 UpdateInfo(userID, data);
             }
         }
-
         public void UpdateInfo(string userID, PlayerData data)
         {
             PlayerdataDic.Add(userID, data);
             ///玩家登陆成功
         }
-
         public void ClearData()
         {
             PlayerdataDic.Clear();
         }
-
         public void RemovePlayer(string userId)
         {
             if (PlayerdataDic.ContainsKey(userId))

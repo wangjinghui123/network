@@ -40,7 +40,6 @@ public class ShortTimeAnimation : MonoBehaviour
         _tishiyu.gameObject.SetActive(true);
         StartCoroutine(_circlechange());
     }
-
     private IEnumerator _circlechange()
     {
         int i = readyTime;
